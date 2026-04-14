@@ -7,4 +7,4 @@ class Model:
         pass
 
     def get_all_years(self):
-        DAO.get_all_years()
+        return DAO.get_all_years()
