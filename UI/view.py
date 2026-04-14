@@ -3,44 +3,91 @@ import flet as ft
 
 class View(ft.UserControl):
     def __init__(self, page: ft.Page):
+
         super().__init__()
+
         # page stuff
         self._page = page
-        self._page.title = "Template application using MVC and DAO"
+        self._page.title = "Lab 06 - TDP 2026"
         self._page.horizontal_alignment = 'CENTER'
         self._page.theme_mode = ft.ThemeMode.DARK
-        # controller (it is not initialized. Must be initialized in the main, after the controller is created)
+
+        # controller (not initialized -> initialized in the main, after the controller is created)
         self._controller = None
-        # graphical elements
+
+        # definition of graphical elements
         self._title = None
-        self.txt_name = None
-        self.btn_hello = None
-        self.txt_result = None
-        self.txt_container = None
+        self._dd_year = None
+        self._dd_brand = None
+        self._dd_retailer = None
+        self._btn_top_sales = None
+        self._btn_analyze_sales = None
+        self._txt_result = None
 
     def load_interface(self):
+
         # title
-        self._title = ft.Text("Hello World", color="blue", size=24)
+        self._title = ft.Text("Analisi Database go_sales", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        #ROW with some controls
-        # text field for the name
-        self.txt_name = ft.TextField(
-            label="name",
-            width=200,
-            hint_text="Insert a your name"
+        # ROW 1: dropdowns for anno, brand, retailer
+        self._dd_year = ft.Dropdown(
+            label="Anno",
+            hint_text="Selezionare un anno",
+            width=300,
+            options=[]
+        )
+        self._controller.fill_dd_year()
+
+        self._dd_brand = ft.Dropdown(
+            label="Brand",
+            hint_text="Selezionare un brand",
+            width=300,
+            options=[]
+        )
+        self._controller.fill_dd_brand()
+
+        self._dd_retailer = ft.Dropdown(
+            label="Retailer",
+            hint_text="Selezionare un retailer",
+            width=300,
+            options=[]
+        )
+        self._controller.fill_dd_retailer()
+
+        # creazione row1
+        row1 = ft.Row(
+            controls=[self._dd_year, self._dd_brand, self._dd_retailer],
+            alignment=ft.MainAxisAlignment.CENTER
         )
 
-        # button for the "hello" reply
-        self.btn_hello = ft.ElevatedButton(text="Hello", on_click=self._controller.handle_hello)
-        row1 = ft.Row([self.txt_name, self.btn_hello],
-                      alignment=ft.MainAxisAlignment.CENTER)
-        self._page.controls.append(row1)
+        # ROW 2: button for top sales, analyze sales
+        self._btn_top_sales = ft.ElevatedButton(
+            text="Top vendite",
+            on_click=self._controller.handle_top_sales,
+            width=200
+        )
+        self._btn_analyze_sales = ft.ElevatedButton(
+            text="Analizza vendite",
+            on_click=self._controller.handle_analyze_sales,
+            width=200
+        )
 
-        # List View where the reply is printed
-        self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
-        self._page.controls.append(self.txt_result)
-        self._page.update()
+        # creazione row2
+        row2 = ft.Row(
+            controls=[self._btn_top_sales, self._btn_analyze_sales],
+            alignment=ft.MainAxisAlignment.CENTER
+        )
+
+        # allineamento -> column invece di self.lv_out = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+        self._txt_result = ft.Column(
+            expand=True,
+            spacing=15,
+            scroll=ft.ScrollMode.AUTO
+        )
+
+        self._page.controls.extend([row1, row2, self._txt_result])
+        self.update_page()
 
     @property
     def controller(self):

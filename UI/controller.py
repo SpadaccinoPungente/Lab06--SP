@@ -2,16 +2,30 @@ import flet as ft
 
 
 class Controller:
+
     def __init__(self, view, model):
-        # the view, with the graphical elements of the UI
         self._view = view
-        # the model, which implements the logic of the program and holds the data
         self._model = model
 
-    def handle_hello(self, e):
-        name = self._view.txt_name.value
-        if name is None or name == "":
-            self._view.create_alert("Inserire il nome")
-            return
-        self._view.txt_result.controls.append(ft.Text(f"Hello, {name}!"))
+    def fill_dd_year(self):
+        """Metodo per popolare _dd_year"""
+
+        years = self._model.get_all_years()
+        # va bene farlo così o mi conviene salvare gli oggetti come sales e riempire le opzioni con solo gli anni?
+
+        for year in years:
+            self._view.dd_year.options.append(ft.dropdown.Option(year))
+
         self._view.update_page()
+
+    def fill_dd_brand(self):
+        pass
+
+    def fill_dd_retailer(self):
+        pass
+
+    def handle_top_sales(self):
+        pass
+
+    def handle_analyze_sales(self):
+        pass
