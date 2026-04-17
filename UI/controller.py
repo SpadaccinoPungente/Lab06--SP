@@ -7,11 +7,12 @@ class Controller:
         self._view = view
         self._model = model
 
+        self.selected_retailer = None
+
     def fill_dd_year(self):
         """Metodo per popolare _dd_year"""
 
         years = self._model.get_all_years()
-        # va bene farlo così o mi conviene salvare gli oggetti come sales e riempire le opzioni con solo gli anni?
 
         for year in years:
             self._view.dd_year.options.append(ft.dropdown.Option(year))
@@ -19,10 +20,42 @@ class Controller:
         self._view.update_page()
 
     def fill_dd_brand(self):
-        pass
+        """Metodo per popolare _dd_brand"""
+
+        brands = self._model.get_all_brands()
+
+        for brand in brands:
+            self._view.dd_brand.options.append(ft.dropdown.Option(brand))
+
+        self._view.update_page()
+
+    # def fill_dd_retailer(self):
+    #     """Metodo per popolare _dd_retailer"""
+    #
+    #     retailers = self._model.get_all_retailers()
+    #
+    #     for retailer in retailers:
+    #         self._view.dd_retailer.options.append(ft.dropdown.Option(retailer))
+    #
+    #     self._view.update_page()
 
     def fill_dd_retailer(self):
-        pass
+        """Metodo per popolare _dd_retailer"""
+
+        retailers = self._model.get_all_retailers()  # Che restituisce i values della mappa
+        for r in retailers:
+            self._view.dd_retailer.options.append(
+                ft.dropdown.Option(
+                    key=str(r.Retailer_code),
+                    text=r.Retailer_name,
+                    data=r,
+                    on_click=self.read_retailer
+                )
+            )
+        self._view.update_page()
+
+    def read_retailer(self, e):
+        self.selected_retailer = e.control.data
 
     def handle_top_sales(self):
         pass

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 # Prima le classi base che non dipendono da altre.
-@dataclass
+@dataclass(frozen=True)
 class Product:
     # Primary key
     Product_number: int
@@ -25,7 +25,7 @@ class Product:
         return hash(self.Product_number)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Retailer:
     # Primary key
     Retailer_code: int
@@ -45,15 +45,15 @@ class Retailer:
 
 
 # Classe Sale che comprende le altre due.
-@dataclass
+@dataclass(frozen=True)
 class Sale:
     # Oggetti interi invece del solo ID.
     Retailer: Retailer
     Product: Product
 
-    # Manteniamo entrambi i valori (richiede una JOIN tra go_methods e go_daily_sales).
+    # Mantengo entrambi i valori di Order_method (richiede una JOIN tra go_methods e go_daily_sales).
     Order_method_code: int
-    Order_method_type: str  # Esempio: fax, email, web, ecc.
+    Order_method_type: str
 
     Date: datetime
     Quantity: int
@@ -71,10 +71,10 @@ class Sale:
     def __eq__(self, other):
         return (self.Retailer == other.Retailer
                 and self.Product == other.Product
-                and self.Order_method_code == other.Order_method_code
-                and self.Date == other.Date)
+                and self.Order_method_code == other.Order_method_code)
 
     def __hash__(self):
-        # È preferibile usare una tupla per l'hash per evitare collisioni.
-        return hash((self.Retailer.Retailer_code, self.Product.Product_number, self.Order_method_code, self.Date))
+        # Passare una tupla invece di una somma evita collisioni.
+        return hash((self.Retailer.Retailer_code, self.Product.Product_number, self.Order_method_code))
+
 

@@ -6,87 +6,90 @@ class View(ft.UserControl):
 
         super().__init__()
 
-        # page stuff
         self._page = page
         self._page.title = "Lab 06 - TDP 2026"
         self._page.horizontal_alignment = 'CENTER'
         self._page.theme_mode = ft.ThemeMode.DARK
 
-        # controller (not initialized -> initialized in the main, after the controller is created)
+        # Controller -> non inizializzato, viene fatto nel main dopo la creazione.
         self._controller = None
 
-        # definition of graphical elements
+        # Definizione degli elementi grafici.
+
+        # Titolo.
         self._title = None
-        self._dd_year = None
-        self._dd_brand = None
-        self._dd_retailer = None
-        self._btn_top_sales = None
-        self._btn_analyze_sales = None
-        self._txt_result = None
+        # ROW 1.
+        self.dd_year = None
+        self.dd_brand = None
+        self.dd_retailer = None
+        # ROW 2.
+        self.btn_top_sales = None
+        self.btn_analyze_sales = None
+        self.txt_result = None
 
     def load_interface(self):
 
-        # title
+        # Titolo.
         self._title = ft.Text("Analisi Database go_sales", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        # ROW 1: dropdowns for anno, brand, retailer
-        self._dd_year = ft.Dropdown(
+        # ROW 1: dropdown per anno, brand, retailer.
+        self.dd_year = ft.Dropdown(
             label="Anno",
             hint_text="Selezionare un anno",
             width=300,
-            options=[]
+            options=[ft.dropdown.Option(key="None", text="Nessun filtro")]
         )
         self._controller.fill_dd_year()
 
-        self._dd_brand = ft.Dropdown(
+        self.dd_brand = ft.Dropdown(
             label="Brand",
             hint_text="Selezionare un brand",
             width=300,
-            options=[]
+            options=[ft.dropdown.Option(key="None", text="Nessun filtro")]
         )
         self._controller.fill_dd_brand()
 
-        self._dd_retailer = ft.Dropdown(
+        self.dd_retailer = ft.Dropdown(
             label="Retailer",
             hint_text="Selezionare un retailer",
             width=300,
-            options=[]
+            options=[ft.dropdown.Option(key="None", text="Nessun filtro")]
         )
         self._controller.fill_dd_retailer()
 
-        # creazione row1
+        # Creazione row1.
         row1 = ft.Row(
-            controls=[self._dd_year, self._dd_brand, self._dd_retailer],
+            controls=[self.dd_year, self.dd_brand, self.dd_retailer],
             alignment=ft.MainAxisAlignment.CENTER
         )
 
-        # ROW 2: button for top sales, analyze sales
-        self._btn_top_sales = ft.ElevatedButton(
+        # ROW 2: bottone per top sales, analyze sales.
+        self.btn_top_sales = ft.ElevatedButton(
             text="Top vendite",
             on_click=self._controller.handle_top_sales,
             width=200
         )
-        self._btn_analyze_sales = ft.ElevatedButton(
+        self.btn_analyze_sales = ft.ElevatedButton(
             text="Analizza vendite",
             on_click=self._controller.handle_analyze_sales,
             width=200
         )
 
-        # creazione row2
+        # Creazione row2.
         row2 = ft.Row(
-            controls=[self._btn_top_sales, self._btn_analyze_sales],
+            controls=[self.btn_top_sales, self.btn_analyze_sales],
             alignment=ft.MainAxisAlignment.CENTER
         )
 
-        # allineamento -> column invece di self.lv_out = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
-        self._txt_result = ft.Column(
+        # Allineamento -> column invece di self.lv_out = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+        self.txt_result = ft.Column(
             expand=True,
             spacing=15,
             scroll=ft.ScrollMode.AUTO
         )
 
-        self._page.controls.extend([row1, row2, self._txt_result])
+        self._page.controls.extend([row1, row2, self.txt_result])
         self.update_page()
 
     @property
