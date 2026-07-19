@@ -18,10 +18,12 @@ class View(ft.UserControl):
 
         # Titolo.
         self._title = None
+
         # ROW 1.
         self.dd_year = None
         self.dd_brand = None
         self.dd_retailer = None
+
         # ROW 2.
         self.btn_top_sales = None
         self.btn_analyze_sales = None
